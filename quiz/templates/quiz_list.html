@@ -1,0 +1,112 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<style>
+.quiz-page{
+    padding:30px;
+}
+.quiz-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+    gap:25px;
+}
+
+.quiz-card{
+    background:white;
+    border-radius:20px;
+    box-shadow:0 10px 25px rgba(0,0,0,0.08);
+    padding:25px;
+    transition:.3s;
+    position:relative;
+    overflow:hidden;
+}
+.quiz-card:hover{
+    transform:translateY(-8px);
+    box-shadow:0 20px 40px rgba(102,126,234,.25);
+}
+
+.quiz-card h3{
+    color:#4f46e5;
+    font-size:22px;
+    margin-bottom:8px;
+}
+.quiz-card p{
+    color:#555;
+    font-size:14px;
+    margin-bottom:20px;
+}
+
+.quiz-footer{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+}
+
+.start-btn{
+    background:linear-gradient(135deg,#667eea,#764ba2);
+    color:white;
+    padding:10px 22px;
+    border-radius:30px;
+    text-decoration:none;
+    font-weight:600;
+    transition:.3s;
+}
+.start-btn:hover{
+    box-shadow:0 10px 20px rgba(102,126,234,.6);
+    transform:scale(1.05);
+}
+
+.quiz-badge{
+    background:#eef2ff;
+    color:#4f46e5;
+    padding:6px 14px;
+    border-radius:20px;
+    font-size:13px;
+    font-weight:600;
+}
+.badges span{
+ padding:6px 14px;
+ border-radius:20px;
+ font-size:13px;
+ margin-right:6px;
+ color:white;
+}
+.easy{
+  background:#22c55e;
+ 
+}
+.type{
+  background:#6366f1;
+}
+
+</style>
+
+<div class="quiz-page">
+    <h2 style="margin-bottom:20px;">📚 Available Quizzes</h2>
+
+    <div class="quiz-grid">
+        {% for quiz in quizzes %}
+        <div class="quiz-card">
+            <span class="quiz-badge">{{ quiz.questions.count }} Questions</span>
+            <h3>{{ quiz.title }}</h3>
+            <p>{{ quiz.description|truncatechars:90 }}</p>
+
+
+            <div class="bades">
+              <span class="easy">Easy</span>
+              <span class="type">MCQ</span>
+            </div>
+            <div class="quiz-footer">
+                <small>⏱ 5 mins</small>
+                <a href="{% url 'quiz_detail' quiz.id %}" class="start-btn">Start Quiz</a>
+            </div>
+        </div>
+        {% empty %}
+        <p>No quizzes available.</p>
+        {% endfor %}
+
+    </div>
+    <a href="{% url 'student_dashboard' %}" class="btn" style="margin-left: 10px; background-color: aquamarine;">Back</a>
+</div>
+
+{% endblock %}

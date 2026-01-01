@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+{% block content %}
+<style>
+.result-box{
+ max-width:500px;margin:80px auto;background:white;padding:40px;
+ border-radius:20px;text-align:center;box-shadow:0 15px 40px rgba(0,0,0,.15)
+}
+.circle{
+ width:160px;height:160px;border-radius:50%;
+ border:12px solid #667eea;display:flex;align-items:center;
+ justify-content:center;margin:20px auto;font-size:30px;font-weight:700;color:#667eea
+}
+.btn{display:inline-block;margin-top:25px;padding:12px 30px;border-radius:30px;
+ background:#667eea;color:white;text-decoration:none;font-weight:600}
+</style>
+
+<div class="result-box">
+ <h2>🎉 Quiz Completed!</h2>
+ <h3>{{ quiz.title }}</h3>
+
+ <div class="circle">
+   {{ correct }} / {{ total }}
+ </div>
+
+ <p>Your Score</p>
+
+ <a href="{% url 'student_dashboard' %}" class="btn">Back to Dashboard</a>
+ <a href="{% url 'my_results' %}" class="btn" style="background:#22c55e">My Results</a>
+</div>
+{% endblock %}

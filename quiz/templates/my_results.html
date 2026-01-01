@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<style>
+.result-box{
+    background:white;
+    padding:25px;
+    border-radius:16px;
+    box-shadow:0 8px 25px rgba(0,0,0,.08);
+    margin-bottom:25px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+}
+.circle{
+    width:110px;
+    height:110px;
+    border-radius:50%;
+    border:10px solid #6366f1;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:22px;
+    font-weight:600;
+    color:#6366f1;
+}
+</style>
+
+<h2>📊 My Quiz Results</h2>
+
+{% if quiz_scores %}
+    {% for quiz, data in quiz_scores.items %}
+    <div class="result-box">
+        <div>
+            <h3>{{ quiz.title }}</h3>
+            <p>{{ data.correct }} / {{ data.total }} Correct</p>
+        </div>
+        <div class="circle">{{ data.correct }}/{{ data.total }}</div>
+    </div>
+    <a href="{% url 'student_dashboard' %}" class="btn" style="margin-left: 10px; background-color: aquamarine;">Back to Dashboard</a>
+    {% endfor %}
+{% else %}
+    <p>No quiz attempts yet.</p>
+{% endif %}
+
+{% endblock %}

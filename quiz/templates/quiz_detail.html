@@ -1,0 +1,147 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<style>
+body{
+    background:#f3f4f6;
+    font-family:'Segoe UI',sans-serif;
+}
+
+.quiz-wrapper{
+    max-width:900px;
+    margin:40px auto;
+}
+
+.quiz-header{
+    background:linear-gradient(135deg,#667eea,#764ba2);
+    color:white;
+    padding:2rem;
+    border-radius:20px;
+    text-align:center;
+    box-shadow:0 10px 25px rgba(0,0,0,0.2);
+}
+
+.quiz-header h1{font-size:2.2rem;}
+.quiz-header p{opacity:.9;margin-top:.5rem;}
+
+.timer{
+    margin-top:1rem;
+    font-size:1.3rem;
+    background:rgba(255,255,255,0.2);
+    padding:.6rem 1.5rem;
+    border-radius:30px;
+    display:inline-block;
+}
+
+.question-card{
+    background:white;
+    border-radius:18px;
+    padding:1.8rem;
+    margin-top:1.8rem;
+    box-shadow:0 10px 25px rgba(0,0,0,0.08);
+}
+
+.question-title{
+    font-size:1.1rem;
+    font-weight:600;
+    margin-bottom:1rem;
+}
+
+.choice{
+    display:flex;
+    align-items:center;
+    gap:.8rem;
+    padding:.8rem 1rem;
+    border-radius:12px;
+    border:2px solid #e5e7eb;
+    margin-bottom:.7rem;
+    cursor:pointer;
+    transition:.3s;
+}
+
+.choice:hover{
+    background:#eef2ff;
+    border-color:#6366f1;
+}
+
+.choice input{transform:scale(1.2)}
+
+.submit-btn{
+    width:100%;
+    margin-top:2.5rem;
+    background:linear-gradient(135deg,#667eea,#764ba2);
+    color:white;
+    border:none;
+    padding:1.2rem;
+    font-size:1.2rem;
+    border-radius:30px;
+    font-weight:600;
+    cursor:pointer;
+    transition:.3s;
+}
+
+.submit-btn:hover{
+    transform:translateY(-3px);
+    box-shadow:0 12px 25px rgba(102,126,234,.5);
+}
+
+.back-link{
+    display:block;
+    text-align:center;
+    margin-top:1.5rem;
+    color:#6366f1;
+    text-decoration:none;
+}
+</style>
+
+<div class="quiz-wrapper">
+
+<div class="quiz-header">
+    <h1>{{ quiz.title }}</h1>
+    <p>{{ quiz.description }}</p>
+    <div class="timer" id="timer">05:00</div>
+</div>
+
+<form method="post" id="quizForm">
+{% csrf_token %}
+
+{% for question in quiz.questions.all %}
+<div class="question-card">
+    <div class="question-title">
+        Q{{ forloop.counter }}. {{ question.question_text }}
+    </div>
+
+    {% for choice in question.choices.all %}
+    <label class="choice">
+        <input type="radio" name="question_{{ question.id }}" value="{{ choice.id }}">
+        {{ choice.choice_text }}
+    </label>
+    {% endfor %}
+</div>
+{% endfor %}
+
+<button type="submit" class="submit-btn">Submit Quiz</button>
+</form>
+
+<a href="{% url 'student_dashboard' %}" class="back-link">← Back to Dashboard</a>
+
+</div>
+
+<script>
+let time = 5*60;
+const timer=document.getElementById("timer");
+const form=document.getElementById("quizForm");
+
+setInterval(()=>{
+ let m=Math.floor(time/60);
+ let s=time%60;
+ timer.innerHTML=`${m}:${s<10?"0":""}${s}`;
+ if(time<=0){
+   alert("Time's up! Auto submitting quiz");
+   form.submit();
+ }
+ time--;
+},1000);
+</script>
+
+{% endblock %}

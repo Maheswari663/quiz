@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% block content %}
+<style>
+.settings-card{
+    max-width:600px;
+    margin:auto;
+    background:white;
+    padding:30px;
+    border-radius:15px;
+    box-shadow:0 10px 30px rgba(0,0,0,0.1);
+}
+.settings-group{margin-bottom:20px;}
+.settings-group label{font-weight:600;}
+.settings-group input{
+    width:100%;padding:10px;border-radius:10px;border:1px solid #ddd;
+}
+.save-btn{
+    background:linear-gradient(135deg,#667eea,#764ba2);
+    color:white;padding:12px 25px;border:none;border-radius:10px;
+    font-weight:bold;
+}
+</style>
+
+<div class="settings-card">
+    <h2>⚙️ Account Settings</h2>
+    <form method="post">
+        {% csrf_token %}
+        <div class="settings-group">
+            <label>Username</label>
+            <input type="text" name="username" value="{{ request.user.username }}">
+        </div>
+
+        <div class="settings-group">
+            <label>Email</label>
+            <input type="email" name="email" value="{{ request.user.email }}">
+        </div>
+
+        <button class="save-btn">Save Changes</button>
+    </form>
+</div>
+<a href="{% url 'student_dashboard' %}" class="btn" style="margin-left: 10px; background-color: aquamarine;">Back</a>
+{% endblock %}
